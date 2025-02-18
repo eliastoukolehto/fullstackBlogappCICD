@@ -17,7 +17,7 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-20.03
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -68,7 +68,10 @@ jobs:
         run: |
           cd blogilista-backend/blogilista-frontend
           npm run build
-      - run: flyctl deploy --remote-only
+      - name: deploy app
+        run: |
+          cd blogilista-backend
+          flyctl deploy --remote-only
         if: ${{ env.CONTAINS_SKIP == 'false' }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
