@@ -9,6 +9,7 @@ const loginRouter = require('./controllers/login')
 const blogsRouter = require('./controllers/blogs')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const path = require('path')
 
 
 mongoose.connect(config.MONGODB_URI).then(() => {
@@ -25,6 +26,10 @@ app.use('/api/blogs', blogsRouter, middleware.userExtractor)
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
   app.use('/api/testing', testingRouter)
+}
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/blogilista-frontend/dist')))
 }
 
 app.use(middleware.errorHandler)
